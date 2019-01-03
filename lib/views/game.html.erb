@@ -1,13 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" class="mdl-js">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link href="assets/favicon.ico" rel="icon">
-    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
-    <link href="assets/css/styles.css" rel="stylesheet">
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
-    <title>Codebreaker Web</title>
+  <%= render "patrials/header.html.erb" %>
   <body>
     <section id="introduction">
       <div class="container">
@@ -15,49 +8,53 @@
           <div class="col-12 col-md-6">
             <div class="row">
               <div class="col-md-auto">
-                <h1 class="text-white title">Codebreaker 2018</h1>
+                <h1 class="text-white title"><%= message(:codebreaker)%></h1>
               </div>
             </div>
             <p class="lead text-white-70">
-              Hello, test!
-              Try to guess 4-digit number, that consists of numbers in a range from 1 to 6.
+              <%= message(:hello_msg, name: user_name)%><%= message(:short_rules)%>
             </p>
             <hr class="mb-4">
             <div class="row">
               <div class="col button">
-                <button type="button" class="btn btn-primary" disabled>
+                <button type="button" class="btn btn-primary">
                   Level:
                   <span class="badge badge-light">
-                    Simple
+                    <%= user_level %>
                   </span>
                 </button>
               </div>
               <div class="col text-center button">
-                <button type="button" class="btn btn-primary" disabled>
+                <button type="button" class="btn btn-primary">
                   Attempts:
-                  <span class="badge badge-light">4</span>
+                  <span class="badge badge-light"><%= user_attempts %>/<%= Codebreaker::Entities::Game::DIFFICULTIES[user_level.to_sym][:attempts]%></span>
                 </button>
               </div>
 
               <div class="col button">
                 <button type="button" class="btn btn-primary float-right">
                   Hints:
-                  <span class="badge badge-light">1</span>
+                  <span class="badge badge-light"><%= user_hints %>/<%= Codebreaker::Entities::Game::DIFFICULTIES[user_level.to_sym][:hints]%></span>
                 </button>
               </div>
             </div>
             <hr class="mb-4">
 
-            <form method="post" action="http://localhost:9292/submit_answer">
+            <form method="post" action="/guess">
               <div class="form-group">
-                <input class="form-control guess_input" name="number" pattern="^[1-6]{4}$" placeholder="1234" required="" autocomplete="off">
+                <input class="form-control guess_input" name="guess_code" pattern="^[1-6]{4}$" placeholder="1234" required="" autocomplete="off">
               </div>
               <div class="form-group guess_markers_list">
                 <div id="guess_marker">
-                  <button type="button" class="btn btn-success marks" disabled>+</button>
-                  <button type="button" class="btn btn-primary marks" disabled>-</button>
-                  <button type="button" class="btn btn-danger marks" disabled>x</button>
-                  <button type="button" class="btn btn-danger marks" disabled>x</button>
+                  <% @request.session[:guess_code].split('').each do |el| %>
+                     <% if el == '+'%> <button type="button" class="btn btn-success marks" disabled>+</button>
+                     <% elsif el == '-'%> <button type="button" class="btn btn-primary marks" disabled>-</button>
+                     <% end %>
+                  <%end %>
+                  <% loop do %>
+                   <button type="button" class="btn btn-danger marks" disabled>x</button>
+                   <% break if code_size_for_view == Codebreaker::Entities::Game::DIGITS_COUNT %>
+                  <% end %>
                 </div>
               </div>
               <hr class="mb-4">
@@ -65,15 +62,17 @@
               <button type="submit" class="btn btn-primary btn-lg">
                 Submit
               </button>
-              <a class="btn btn-warning btn-lg float-right" role="button">
+            </form>
+            <form method="post" action="/hint">
+              <button class="btn btn-warning btn-lg float-right" role="button"
+                <% if hints_spent %> disabled <% end %>>
                 Show hint!
-                <span class="badge badge-light">
-                  6
-                </span>
-                <span class="badge badge-light">
-                  3
-                </span>
-              </a>
+                <% if !used_hints.empty? %>
+                  <span class="badge badge-light">
+                  <%= used_hints.join(",") %>
+                  </span>
+                <% end %>
+              </button>
             </form>
           </div>
         </div>

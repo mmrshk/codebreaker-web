@@ -1,17 +1,25 @@
 class Renderer
-  def message(phrase)
-    I18n.t(phrase)
+  def message(phrase, hashee  = {})
+    I18n.t(phrase, hashee)
   end
 
-  def error404
+  def lose_view
+    template('lose.html.erb')
+  end
+
+  def error404_view
     template('error404.html.erb')
   end
 
-  def rules
+  def rules_view
     template('rules.html.erb')
   end
 
-  def menu
+  def game_view
+    template('game.html.erb')
+  end
+
+  def menu_view
     template('menu.html.erb')
   end
 

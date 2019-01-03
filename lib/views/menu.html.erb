@@ -1,15 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" class="mdl-js">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link href="assets/favicon.ico" rel="icon">
-    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
-    <link href="assets/css/styles.css" rel="stylesheet">
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
-    <title>Codebreaker Web</title>
-  </head>
+  <%= render "patrials/header.html.erb" %>
   <body>
     <section id="introduction">
       <div class="container">
@@ -17,12 +8,12 @@
           <div class="col-12 col-md-6">
             <div class="row">
               <div class="col-md-auto">
-                <h1 class="text-white title">Codebreaker 2018</h1>
+                <h1 class="text-white title"><%= message(:codebreaker)%></h1>
               </div>
             </div>
             <div class="row">
               <p class="lead text-white-70">
-                Try to guess 4-digit number, that consists of numbers in a range from 1 to 6.
+                <%= message(:short_rules)%>
               </p>
             </div>
             <hr class="mb-4">
@@ -35,9 +26,16 @@
                 <label for="level" class="lead label">Game level:</label>
                 <select class="custom-select" name="level" required="">
                   <option value="">Choose game level...</option>
-                  <option value="simple">Simple</option>
-                  <option value="middle">Middle</option>
-                  <option value="hard">Hard</option>
+                  <option value="easy"><%= message(:easy_level,
+                                           {hints: Codebreaker::Entities::Game::DIFFICULTIES[:easy][:hints],
+                                           attempts: Codebreaker::Entities::Game::DIFFICULTIES[:easy][:attempts]}) %>
+                  </option>
+                  <option value="medium"><%= message(:medium_level,
+                                           {hints: Codebreaker::Entities::Game::DIFFICULTIES[:medium][:hints],
+                                           attempts: Codebreaker::Entities::Game::DIFFICULTIES[:medium][:attempts]}) %></option>
+                  <option value="hell"><%= message(:hell_level,
+                                           {hints: Codebreaker::Entities::Game::DIFFICULTIES[:hell][:hints],
+                                           attempts: Codebreaker::Entities::Game::DIFFICULTIES[:hell][:attempts]}) %></option>
                 </select>
               </div>
 

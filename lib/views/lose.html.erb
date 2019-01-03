@@ -1,14 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" class="mdl-js">
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link href="assets/favicon.ico" rel="icon">
-  <link href="assets/css/bootstrap.min.css" rel="stylesheet">
-  <link href="assets/css/styles.css" rel="stylesheet">
-  <script src="assets/js/jquery.min.js"></script>
-  <script src="assets/js/bootstrap.min.js"></script>
-  <title>Codebreaker Web</title>
-
+  <%= render "patrials/header.html.erb" %>
   <body>
     <section id="introduction">
       <div class="container">
@@ -16,7 +8,7 @@
           <div class="col-12 col-md-6">
             <div class="row">
               <div class="col-md-auto">
-                <h1 class="text-white title inline-block">Codebreaker 2018</h1>
+                <h1 class="text-white title inline-block"><%= message(:codebreaker)%></h1>
               </div>
             </div>
             <div class="row">
@@ -24,19 +16,19 @@
                 <button type="button" class="btn btn-primary" disabled>
                   Level:
                   <span class="badge badge-light">
-                    Middle
+                    <%= user_level %>
                   </span>
                 </button>
                 <button type="button" class="btn btn-primary" disabled>
                   Attempts Left:
                   <span class="badge badge-light">
-                    0/8
+                    <%= user_attempts %>/<%= Codebreaker::Entities::Game::DIFFICULTIES[user_level.to_sym][:attempts]%>
                   </span>
                 </button>
                 <button type="button" class="btn btn-primary" disabled>
                   Hints Left:
                   <span class="badge badge-light">
-                    1/3
+                    <%= user_hints %>/<%= Codebreaker::Entities::Game::DIFFICULTIES[user_level.to_sym][:hints]%>
                   </span>
                 </button>
               </div>
@@ -46,22 +38,22 @@
               <div class="text-center">
                 <div class="text-center">
                   <h3 class="text-white">
-                    Oops, NAME! You lose the game!
+                    Oops, <%= user_name %>! You lose the game!
                   </h3>
                   <h4 class="text-white">
                     The code was
-                    <strong>1553</strong>
+                    <strong><%= game_code %></strong>
                   </h4>
                 </div>
                 <img src="assets/images/lost.gif" class="img-fluid" alt="You lose the game!">
               </div>
             </div>
             <hr class="mb-4">
-            <a class="btn btn-primary btn-lg" href="#" role="button">
-              Play again!
+            <a class="btn btn-primary btn-lg" href="/after_lose" role="button">
+              <%= I18n.t(:play_again_button) %>
             </a>
-            <a class="btn btn-success btn-lg float-right" href="#" role="button">
-              Statistics
+            <a class="btn btn-success btn-lg float-right" href="/stats" role="button">
+              <%= I18n.t(:statistics_button) %>
             </a>
           </div>
          </div>
