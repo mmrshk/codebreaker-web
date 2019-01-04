@@ -1,9 +1,9 @@
 GIT
   remote: git://github.com/mmrshk/rg-codebreaker.git
-  revision: e1a138b13de96b8dcd835bdb590a58fcdbd3674f
+  revision: da50b38dcff71792063a5750e4873c30e8105576
   branch: dev
   specs:
-    codebreaker-yeroshek (0.1.4)
+    codebreaker-yeroshek (0.1.5)
 
 GEM
   remote: https://rubygems.org/
