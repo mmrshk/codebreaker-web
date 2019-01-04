@@ -1,6 +1,10 @@
 class Renderer
-  def message(phrase, hashee  = {})
+  def message(phrase, hashee = {})
     I18n.t(phrase, hashee)
+  end
+
+  def stats_view
+    template('statistics.html.erb')
   end
 
   def lose_view
@@ -21,6 +25,10 @@ class Renderer
 
   def menu_view
     template('menu.html.erb')
+  end
+
+  def win_view
+    template('win.html.erb')
   end
 
   def template(erb_name)

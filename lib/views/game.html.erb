@@ -42,18 +42,27 @@
 
             <form method="post" action="/guess">
               <div class="form-group">
-                <input class="form-control guess_input" name="guess_code" pattern="^[1-6]{4}$" placeholder="1234" required="" autocomplete="off">
+                <input class="form-control guess_input" name="guess_code" pattern="^[1-6]{4}$"
+                  <% if @request.session[:guess_code].empty? %>
+                    placeholder="1234"
+                  <% else %>
+                    placeholder="<%= @request.session[:guess] %>"
+                  <% end %>
+                  required="" autocomplete="off">
               </div>
               <div class="form-group guess_markers_list">
                 <div id="guess_marker">
-                  <% @request.session[:guess_code].split('').each do |el| %>
-                     <% if el == '+'%> <button type="button" class="btn btn-success marks" disabled>+</button>
-                     <% elsif el == '-'%> <button type="button" class="btn btn-primary marks" disabled>-</button>
-                     <% end %>
-                  <%end %>
-                  <% loop do %>
-                   <button type="button" class="btn btn-danger marks" disabled>x</button>
-                   <% break if code_size_for_view == Codebreaker::Entities::Game::DIGITS_COUNT %>
+                  <% if @request.session[:guess_code].empty? %>
+                    <% for i in 0...4 do %>
+                      <button type="button" class="btn btn-danger marks" disabled>x</button>
+                    <% end %>
+                  <% else %>
+                    <% @request.session[:guess_code].split('').each do |el| %>
+                       <% if el == '+'%> <button type="button" class="btn btn-success marks" disabled>+</button>
+                       <% elsif el == '-'%> <button type="button" class="btn btn-primary marks" disabled>-</button>
+                       <% elsif el == 'x'%> <button type="button" class="btn btn-danger marks" disabled>x</button>
+                       <% end %>
+                    <% end %>
                   <% end %>
                 </div>
               </div>
@@ -65,7 +74,7 @@
             </form>
             <form method="post" action="/hint">
               <button class="btn btn-warning btn-lg float-right" role="button"
-                <% if hints_spent %> disabled <% end %>>
+                <% if hints_spent? %> disabled <% end %>>
                 Show hint!
                 <% if !used_hints.empty? %>
                   <span class="badge badge-light">

@@ -26,43 +26,21 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <th scope="row">1</th>
-                    <td>Player 1</td>
-                    <td>Middle</td>
-                    <td>8/10</td>
-                    <td>3/3</td>
-                    <td>2018.12.04 - 17:00:01</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">2</th>
-                    <td>Player 1</td>
-                    <td>Middle</td>
-                    <td>8/10</td>
-                    <td>3/3</td>
-                    <td>2018.12.04 - 17:00:01</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">3</th>
-                    <td>Player 1</td>
-                    <td>Middle</td>
-                    <td>8/10</td>
-                    <td>3/3</td>
-                    <td>2018.12.04 - 17:00:01</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">4</th>
-                    <td>Player 1</td>
-                    <td>Middle</td>
-                    <td>8/10</td>
-                    <td>3/3</td>
-                    <td>2018.12.04 - 17:00:01</td>
-                  </tr>
+                  <% @request.session[:scores].each_with_index do |data, user_id| %>
+                    <tr>
+                      <th scope="row"><%= user_id + 1 %></th>
+                      <td><%= data[:name] %></td>
+                      <td><%= data[:difficulty] %></td>
+                      <td><%= data[:attempts_used] %>/<%= data[:all_attempts] %></td>
+                      <td><%= data[:hints_used] %>/<%= data[:all_hints] %></td>
+                      <td><%= data[:date].strftime "%Y-%m-%d %H:%M:%S" %></td>
+                    </tr>
+                  <% end %>
                 </tbody>
               </table>
             </div>
             <hr class="mb-4">
-            <a class="btn btn-primary btn-lg" href="#" role="button">
+            <a class="btn btn-primary btn-lg" href="/" role="button">
               Home
             </a>
           </div>

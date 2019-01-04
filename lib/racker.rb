@@ -7,6 +7,8 @@ class Racker < Renderer
 
   def initialize(env)
     @request = Rack::Request.new(env)
+    @guess = Guess.new
+    @storage = Storage.new
   end
 
   def response
@@ -16,42 +18,54 @@ class Racker < Renderer
     when '/play' then play
     when '/hint' then hint
     when '/guess' then guess
-    when '/lose' then handle_lose
-    when '/win' then handle_win
+    when '/lose' then lose
+    when '/win' then win
     when '/stats' then stats
-    when '/after_lose' then handle_after_lose
     else error404_view
     end
   end
 
   def index
-    return Rack::Response.new(play) unless exist?(:game)
+    return game_view unless exist?(:game)
 
     menu_view
   end
 
+  def stats
+    @request.session[:scores] = @storage.load
+    stats_view
+  end
+
   def guess
     Rack::Response.new do |response|
-      @game = create_game
-      return handle_lose unless @game.attempts.positive?
+      game = create_game
+      return lose unless game.attempts.positive?
 
       @guess_code = @request.params['guess_code']
-      @request.session[:guess_code] = @game.start_process(@guess_code)
-      @game.decrease_attempts!
+      @request.session[:guess] = @guess_code
+      @request.session[:guess_code] = @guess.handle_guess_code(game, @guess_code)
+      return win if game.win?(@guess_code)
+
+      game.decrease_attempts!
       response.redirect('/play')
     end
   end
 
-  def handle_lose
-    return Rack::Response.new(index) if exist?(:game)
+  def lose
+    return error404_view if exist?(:game)
 
-    lose_view
+    Rack::Response.new(lose_view) do
+      destroy_session
+    end
   end
 
-  def handle_after_lose
-    Rack::Response.new do |response|
+  def win
+    return error404_view if exist?(:game)
+
+    Rack::Response.new(win_view) do
+      game = create_game
+      @storage.save(game, user_name)
       destroy_session
-      response.redirect('/')
     end
   end
 
@@ -63,38 +77,24 @@ class Racker < Renderer
 
   def hint
     Rack::Response.new do |response|
-      @game = create_game
-      return error404_view if @game.hints_spent?
+      game = create_game
+      return error404_view if game.hints_spent?
 
-      hint = @game.take_a_hint!
+      hint = game.take_a_hint!
       used_hints.push(hint)
       response.redirect('/play')
     end
   end
 
-  def hints_spent
-    @game = create_game
-    @game.hints_spent?
-  end
-
-  def create_game
-    return @request.session[:game] unless exist?(:game)
-
-    @game = Codebreaker::Entities::Game.new
-    @game.generate(Codebreaker::Entities::Game::DIFFICULTIES[user_level.to_sym])
-    @game
+  def hints_spent?
+    game = create_game
+    game.hints_spent?
   end
 
   def play
     set_quess_code
     @request.session[:game] = create_game
     game_view
-  end
-
-  def set_quess_code
-    return @request.session[:guess_code] unless @request.session[:guess_code].nil?
-
-    @request.session[:guess_code] = ''
   end
 
   def user_name
@@ -121,22 +121,31 @@ class Racker < Renderer
     Codebreaker::Entities::Game::DIFFICULTIES[user_level.to_sym][:hints]
   end
 
-  def destroy_session
-    @request.session.clear
-  end
-
   def game_code
     @request.session[:game].code
   end
 
-  def code_size_for_view
-    code_size = @request.session[:guess_code].size
-    code_size += 1
+  private
+
+  def destroy_session
+    @request.session.clear
   end
 
-  private
+  def set_quess_code
+    return @request.session[:guess_code] unless @request.session[:guess_code].nil?
+
+    @request.session[:guess_code] = ''
+  end
 
   def exist?(param)
     @request.session[param].nil?
+  end
+
+  def create_game
+    return @request.session[:game] unless exist?(:game)
+
+    game = Codebreaker::Entities::Game.new
+    game.generate(Codebreaker::Entities::Game::DIFFICULTIES[user_level.to_sym])
+    game
   end
 end

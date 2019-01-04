@@ -22,7 +22,7 @@ en:
   Codebreaker also has some number of hints(depends on chosen difficulty). If a user takes a hint - he receives back a separate digit of the secret code.
 "
   difficulty: "You had to %{hints} hints and %{attempts} attempts"
-  win_game_message: "Yayy, u won the game! Congrats!"
+  win_game_message: "Congratulations, %{name}! You won the game!"
   have_no_hints_message: "Oh, your hints ended"
   print_hint_number: "Hint number: %{code}"
   registration_name_length_error: "It must be more than 3 and less than 20 symbols."
@@ -35,3 +35,4 @@ en:
   short_rules: Try to guess 4-digit number, that consists of numbers in a range from 1 to 6.
   play_again_button: Play again!
   statistics_button: Statistics
+  lose_game_message: "Oops, %{name}! You lose the game!"

@@ -38,7 +38,7 @@
               <div class="text-center">
                 <div class="text-center">
                   <h3 class="text-white">
-                    Oops, <%= user_name %>! You lose the game!
+                    <%= message(:lose_game_message, name: user_name) %>
                   </h3>
                   <h4 class="text-white">
                     The code was
@@ -49,7 +49,7 @@
               </div>
             </div>
             <hr class="mb-4">
-            <a class="btn btn-primary btn-lg" href="/after_lose" role="button">
+            <a class="btn btn-primary btn-lg" href="/" role="button">
               <%= I18n.t(:play_again_button) %>
             </a>
             <a class="btn btn-success btn-lg float-right" href="/stats" role="button">
