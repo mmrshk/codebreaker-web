@@ -8,13 +8,6 @@ RSpec.describe Racker do
   let(:path) { 'database/data_test.yml' }
   let(:storage) { Storage.new }
 
-  before do
-    File.new(path, 'w+')
-    stub_const('Codebreaker::Entities::DataStorage::FILE_NAME', path)
-  end
-
-  after { File.delete(path) }
-
   describe 'statuses' do
     context 'when root path' do
       before { get '/' }
