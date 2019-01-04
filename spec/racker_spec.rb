@@ -5,7 +5,7 @@ require 'spec_helper'
 RSpec.describe Racker do
   let(:app) { Rack::Builder.parse_file('config.ru').first }
   let(:game) { Codebreaker::Entities::Game.new }
-  let(:path) { './database/data_test.yml' }
+  let(:path) { 'database/data_test.yml' }
   let(:storage) { Storage.new }
 
   before do
