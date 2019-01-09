@@ -26,7 +26,7 @@ class Racker < Renderer
   end
 
   def index
-    return game_view unless exist?(:game)
+    return game_view unless not_exist?(:game)
 
     menu_view
   end
@@ -52,7 +52,7 @@ class Racker < Renderer
   end
 
   def lose
-    return error404_view if exist?(:game)
+    return error404_view if not_exist?(:game)
 
     Rack::Response.new(lose_view) do
       destroy_session
@@ -60,7 +60,7 @@ class Racker < Renderer
   end
 
   def win
-    return error404_view if exist?(:game)
+    return error404_view if not_exist?(:game)
 
     Rack::Response.new(win_view) do
       game = create_game
@@ -70,7 +70,7 @@ class Racker < Renderer
   end
 
   def used_hints
-    return @request.session[:used_hints] unless exist?(:used_hints)
+    return @request.session[:used_hints] unless not_exist?(:used_hints)
 
     @request.session[:used_hints] = []
   end
@@ -98,25 +98,25 @@ class Racker < Renderer
   end
 
   def user_name
-    return @request.session[:name] unless exist?(:name)
+    return @request.session[:name] unless not_exist?(:name)
 
     @request.session[:name] = @request.params['player_name']
   end
 
   def user_level
-    return @request.session[:level] unless exist?(:level)
+    return @request.session[:level] unless not_exist?(:level)
 
     @request.session[:level] = @request.params['level']
   end
 
   def user_attempts
-    return @request.session[:game].attempts unless exist?(:game)
+    return @request.session[:game].attempts unless not_exist?(:game)
 
     Codebreaker::Entities::Game::DIFFICULTIES[user_level.to_sym][:attempts]
   end
 
   def user_hints
-    return @request.session[:game].hints.size unless exist?(:game)
+    return @request.session[:game].hints.size unless not_exist?(:game)
 
     Codebreaker::Entities::Game::DIFFICULTIES[user_level.to_sym][:hints]
   end
@@ -137,12 +137,12 @@ class Racker < Renderer
     @request.session[:guess_code] = ''
   end
 
-  def exist?(param)
+  def not_exist?(param)
     @request.session[param].nil?
   end
 
   def create_game
-    return @request.session[:game] unless exist?(:game)
+    return @request.session[:game] unless not_exist?(:game)
 
     game = Codebreaker::Entities::Game.new
     game.generate(Codebreaker::Entities::Game::DIFFICULTIES[user_level.to_sym])

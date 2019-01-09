@@ -8,32 +8,32 @@
           <div class="col-12 col-md-6">
             <div class="row">
               <div class="col-md-auto">
-                <h1 class="text-white title"><%= message(:codebreaker)%></h1>
+                <h1 class="text-white title"><%= I18n.t(:codebreaker)%></h1>
               </div>
             </div>
             <div class="row">
               <p class="lead text-white-70">
-                <%= message(:short_rules)%>
+                <%= I18n.t(:short_rules)%>
               </p>
             </div>
             <hr class="mb-4">
             <form method="post" action="/play">
               <div class="form-group">
-                <label for="player_name" class="lead label">Player's name:</label>
+                <label for="player_name" class="lead label"><%= I18n.t(:player_name) %></label>
                 <input class="form-control" name="player_name" id="player_name" pattern="^[\w\u0400-\u04ff]{3,20}$" placeholder="Your name" autofocus="" required="">
               </div>
               <div class="form-group">
-                <label for="level" class="lead label">Game level:</label>
+                <label for="level" class="lead label"><%= I18n.t(:game_level) %></label>
                 <select class="custom-select" name="level" required="">
-                  <option value="">Choose game level...</option>
-                  <option value="easy"><%= message(:easy_level,
+                  <option value=""><%= I18n.t(:choose_game_level) %></option>
+                  <option value="easy"><%= I18n.t(:easy_level,
                                            {hints: Codebreaker::Entities::Game::DIFFICULTIES[:easy][:hints],
                                            attempts: Codebreaker::Entities::Game::DIFFICULTIES[:easy][:attempts]}) %>
                   </option>
-                  <option value="medium"><%= message(:medium_level,
+                  <option value="medium"><%= I18n.t(:medium_level,
                                            {hints: Codebreaker::Entities::Game::DIFFICULTIES[:medium][:hints],
                                            attempts: Codebreaker::Entities::Game::DIFFICULTIES[:medium][:attempts]}) %></option>
-                  <option value="hell"><%= message(:hell_level,
+                  <option value="hell"><%= I18n.t(:hell_level,
                                            {hints: Codebreaker::Entities::Game::DIFFICULTIES[:hell][:hints],
                                            attempts: Codebreaker::Entities::Game::DIFFICULTIES[:hell][:attempts]}) %></option>
                 </select>
@@ -42,11 +42,11 @@
               <hr class="mb-4">
 
               <button type="submit" class="btn btn-primary btn-lg">
-                Start the game!
+                <%= I18n.t(:start_button) %>
               </button>
               <span class="float-right">
-                <a class="btn btn-warning btn-lg" href="/rules" role="button">Rules</a>
-                <a class="btn btn-success btn-lg" href="/stats" role="button">Statistics</a>
+                <a class="btn btn-warning btn-lg" href="/rules" role="button"><%= I18n.t(:rules) %></a>
+                <a class="btn btn-success btn-lg" href="/stats" role="button"><%= I18n.t(:stats) %></a>
               </span>
             </form>
           </div>

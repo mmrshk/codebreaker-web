@@ -8,17 +8,17 @@
           <div class="col-12 col-md-6">
             <div class="row">
               <div class="col-md-auto">
-                <h1 class="text-white title"><%= message(:codebreaker)%></h1>
+                <h1 class="text-white title"><%= I18n.t(:codebreaker) %></h1>
               </div>
             </div>
             <p class="lead text-white-70">
-              <%= message(:hello_msg, name: user_name)%><%= message(:short_rules)%>
+              <%= I18n.t(:hello_msg, name: user_name)%><%= I18n.t(:short_rules)%>
             </p>
             <hr class="mb-4">
             <div class="row">
               <div class="col button">
                 <button type="button" class="btn btn-primary">
-                  Level:
+                  <%= I18n.t(:level) %>:
                   <span class="badge badge-light">
                     <%= user_level %>
                   </span>
@@ -26,14 +26,14 @@
               </div>
               <div class="col text-center button">
                 <button type="button" class="btn btn-primary">
-                  Attempts:
+                  <%= I18n.t(:attempts) %>:
                   <span class="badge badge-light"><%= user_attempts %>/<%= Codebreaker::Entities::Game::DIFFICULTIES[user_level.to_sym][:attempts]%></span>
                 </button>
               </div>
 
               <div class="col button">
                 <button type="button" class="btn btn-primary float-right">
-                  Hints:
+                  <%= I18n.t(:hints) %>:
                   <span class="badge badge-light"><%= user_hints %>/<%= Codebreaker::Entities::Game::DIFFICULTIES[user_level.to_sym][:hints]%></span>
                 </button>
               </div>
@@ -75,7 +75,7 @@
             <form method="post" action="/hint">
               <button class="btn btn-warning btn-lg float-right" role="button"
                 <% if hints_spent? %> disabled <% end %>>
-                Show hint!
+                  <%= I18n.t(:show_hint) %>
                 <% if !used_hints.empty? %>
                   <span class="badge badge-light">
                   <%= used_hints.join(",") %>

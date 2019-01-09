@@ -39,11 +39,10 @@ RSpec.describe Racker do
 
     context 'when statistics path' do
       before do
-        env 'rack.session', scores: []
-        get '/statistics'
+        get '/stats'
       end
 
-      it { expect(last_request.session[:scores]).not_to be nil }
+      it { expect(last_response.body).to include I18n.t(:top_of_players) }
       it { expect(last_response).to be_ok }
     end
   end
@@ -93,7 +92,7 @@ RSpec.describe Racker do
   describe '#guess' do
     before do
       game.generate(Codebreaker::Entities::Game::DIFFICULTIES[:hell])
-      env 'rack.session', game: game, hints: [], level: 'easy', player_name: 'Denis'
+      env 'rack.session', game: game, hints: [], level: 'easy', player_name: 'Dima'
     end
 
     it 'check response with guess_code' do

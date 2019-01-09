@@ -36,3 +36,20 @@ en:
   play_again_button: Play again!
   statistics_button: Statistics
   lose_game_message: "Oops, %{name}! You lose the game!"
+  top_of_players: "Top of Players:"
+  home: Home
+  date: Date
+  name: Name
+  level: Level
+  attempts_left: Attempts Left
+  hints_left: Hints Left
+  choose_game_level: "Choose game level..."
+  start_button: Start the game!
+  player_name: "Player's name:"
+  game_level: "Game level:"
+  rules: Rules
+  stats: Statistics
+  code_was: The code was
+  attempts: Attempts
+  hints: Hints
+  show_hint: "Show hint!"

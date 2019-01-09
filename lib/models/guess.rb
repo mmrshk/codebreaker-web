@@ -1,11 +1,14 @@
 class Guess
   FAIL_DIGIT_CHAR = 'x'.freeze
+  attr_reader :game, :guess_code
 
   def handle_guess_code(game, guess_code)
-    return game.start_process(guess_code) if valid_size?(game, guess_code)
+    @game = game
+    @guess_code = guess_code
+    return start_process if valid_size?(game, guess_code)
 
-    code = game.start_process(guess_code)
-    code_size = game.start_process(guess_code).size
+    code = start_process
+    code_size = start_process.size
 
     while code_size != Codebreaker::Entities::Game::DIGITS_COUNT
       code += FAIL_DIGIT_CHAR
@@ -18,6 +21,10 @@ class Guess
   private
 
   def valid_size?(game, guess_code)
-    game.start_process(guess_code).size == Codebreaker::Entities::Game::DIGITS_COUNT
+    start_process.size == Codebreaker::Entities::Game::DIGITS_COUNT
+  end
+
+  def start_process
+    game.start_process(guess_code)
   end
 end

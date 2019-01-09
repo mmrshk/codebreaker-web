@@ -8,25 +8,25 @@
           <div class="col-12 col-md-6">
             <div class="row">
               <div class="col-md-auto">
-                <h1 class="text-white title inline-block"><%= message(:codebreaker)%></h1>
+                <h1 class="text-white title inline-block"><%= I18n.t(:codebreaker)%></h1>
               </div>
             </div>
             <div class="row">
               <div class="col button">
                 <button type="button" class="btn btn-primary" disabled>
-                  Level:
+                  <%= I18n.t(:level)%>:
                   <span class="badge badge-light">
                     <%= user_level %>
                   </span>
                 </button>
                 <button type="button" class="btn btn-primary" disabled>
-                  Attempts Left:
+                  <%= I18n.t(:attempts_left)%>:
                   <span class="badge badge-light">
                     <%= user_attempts %>/<%= Codebreaker::Entities::Game::DIFFICULTIES[user_level.to_sym][:attempts]%>
                   </span>
                 </button>
                 <button type="button" class="btn btn-primary" disabled>
-                  Hints Left:
+                  <%= I18n.t(:hints_left)%>:
                   <span class="badge badge-light">
                     <%= user_hints %>/<%= Codebreaker::Entities::Game::DIFFICULTIES[user_level.to_sym][:hints]%>
                   </span>
@@ -38,10 +38,10 @@
               <div class="text-center">
                 <div class="text-center">
                   <h3 class="text-white">
-                    <%= message(:lose_game_message, name: user_name) %>
+                    <%= I18n.t(:lose_game_message, name: user_name) %>
                   </h3>
                   <h4 class="text-white">
-                    The code was
+                    <%= I18n.t(:code_was) %>
                     <strong><%= game_code %></strong>
                   </h4>
                 </div>
