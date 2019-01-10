@@ -56,8 +56,8 @@ RSpec.describe Racker do
 
     it 'adds value to session hints array' do
       post '/hint'
-      expect(game.hints).to be_empty
       expect(last_request.session[:used_hints]).not_to be_empty
+      expect(last_request.session[:game].code.join.include?(last_request.session[:used_hints].join)).to be true
     end
   end
 
@@ -93,10 +93,10 @@ RSpec.describe Racker do
     before do
       game.generate(Codebreaker::Entities::Game::DIFFICULTIES[:hell])
       env 'rack.session', game: game, hints: [], level: 'easy', player_name: 'Dima'
+      post '/guess', guess_code: '1111'
     end
 
     it 'check response with guess_code' do
-      post '/guess', guess_code: '1111'
       expect(last_request.session[:guess_code]).to be_a String
     end
   end

@@ -8,7 +8,7 @@ class Racker < Renderer
   def initialize(env)
     @request = Rack::Request.new(env)
     @guess = Guess.new
-    @storage = Storage.new
+    @storage = Codebreaker::Entities::DataStorage.new
   end
 
   def response
@@ -38,15 +38,14 @@ class Racker < Renderer
 
   def guess
     Rack::Response.new do |response|
-      game = create_game
-      return lose unless game.attempts.positive?
+      return lose unless create_game.attempts.positive?
 
       @guess_code = @request.params['guess_code']
       @request.session[:guess] = @guess_code
-      @request.session[:guess_code] = @guess.handle_guess_code(game, @guess_code)
-      return win if game.win?(@guess_code)
+      @request.session[:guess_code] = @guess.handle_guess_code(create_game, @guess_code)
+      return win if create_game.win?(@guess_code)
 
-      game.decrease_attempts!
+      create_game.decrease_attempts!
       response.redirect('/play')
     end
   end
@@ -64,7 +63,7 @@ class Racker < Renderer
 
     Rack::Response.new(win_view) do
       game = create_game
-      @storage.save(game, user_name)
+      @storage.save_game_result(game.to_h(user_name))
       destroy_session
     end
   end
@@ -92,7 +91,7 @@ class Racker < Renderer
   end
 
   def play
-    set_quess_code
+    set_guess_code
     @request.session[:game] = create_game
     game_view
   end
@@ -131,8 +130,8 @@ class Racker < Renderer
     @request.session.clear
   end
 
-  def set_quess_code
-    return @request.session[:guess_code] unless @request.session[:guess_code].nil?
+  def set_guess_code
+    return @request.session[:guess_code] if @request.session[:guess_code]
 
     @request.session[:guess_code] = ''
   end
