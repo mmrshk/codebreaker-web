@@ -26,9 +26,9 @@ class Racker < Renderer
   end
 
   def index
-    return game_view unless not_exist?(:game)
+    return menu_view if not_exist?(:game)
 
-    menu_view
+    game_view
   end
 
   def stats
@@ -69,9 +69,9 @@ class Racker < Renderer
   end
 
   def used_hints
-    return @request.session[:used_hints] unless not_exist?(:used_hints)
+    return @request.session[:used_hints] = [] if not_exist?(:used_hints)
 
-    @request.session[:used_hints] = []
+    @request.session[:used_hints]
   end
 
   def hint
@@ -97,27 +97,27 @@ class Racker < Renderer
   end
 
   def user_name
-    return @request.session[:name] unless not_exist?(:name)
+    return @request.session[:name] = @request.params['player_name'] if not_exist?(:name)
 
-    @request.session[:name] = @request.params['player_name']
+    @request.session[:name]
   end
 
   def user_level
-    return @request.session[:level] unless not_exist?(:level)
+    return @request.session[:level] = @request.params['level'] if not_exist?(:level)
 
-    @request.session[:level] = @request.params['level']
+    @request.session[:level]
   end
 
   def user_attempts
-    return @request.session[:game].attempts unless not_exist?(:game)
+    return Codebreaker::Entities::Game::DIFFICULTIES[user_level.to_sym][:attempts] if not_exist?(:game)
 
-    Codebreaker::Entities::Game::DIFFICULTIES[user_level.to_sym][:attempts]
+    @request.session[:game].attempts
   end
 
   def user_hints
-    return @request.session[:game].hints.size unless not_exist?(:game)
+    return Codebreaker::Entities::Game::DIFFICULTIES[user_level.to_sym][:hints] if not_exist?(:game)
 
-    Codebreaker::Entities::Game::DIFFICULTIES[user_level.to_sym][:hints]
+    @request.session[:game].hints.size
   end
 
   def game_code
@@ -141,10 +141,10 @@ class Racker < Renderer
   end
 
   def create_game
-    return @request.session[:game] unless not_exist?(:game)
-
     game = Codebreaker::Entities::Game.new
     game.generate(Codebreaker::Entities::Game::DIFFICULTIES[user_level.to_sym])
-    game
+    return game if not_exist?(:game)
+
+    @request.session[:game]
   end
 end
