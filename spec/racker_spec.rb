@@ -50,7 +50,7 @@ RSpec.describe Racker do
   describe '#hint' do
     before do
       game.generate(Codebreaker::Entities::Game::DIFFICULTIES[:hell])
-      env 'rack.session', game: game, used_hints: []
+      env 'rack.session', game: game, used_hints: [], level: :easy
       get '/hint'
     end
 
