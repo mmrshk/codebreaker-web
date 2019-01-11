@@ -6,7 +6,15 @@ RSpec.describe Racker do
   let(:app) { Rack::Builder.parse_file('config.ru').first }
   let(:game) { Codebreaker::Entities::Game.new }
   let(:path) { 'database/data_test.yml' }
-  let(:storage) { Storage.new }
+
+  before do
+    File.new(path, 'w+')
+    stub_const('Codebreaker::Entities::DataStorage::FILE_NAME', 'database/data_test.yml')
+    File.write(Codebreaker::Entities::DataStorage::FILE_NAME, [].to_yaml)
+  end
+
+  after { File.delete(path) }
+
 
   describe 'statuses' do
     context 'when root path' do
@@ -39,6 +47,7 @@ RSpec.describe Racker do
 
     context 'when statistics path' do
       before do
+        env 'rack.session', scores: []
         get '/stats'
       end
 
