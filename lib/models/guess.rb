@@ -14,14 +14,7 @@ class Guess
 
   def produce_code
     code = start_process
-    code_size = start_process.size
-
-    while code_size != Codebreaker::Entities::Game::DIGITS_COUNT
-      code += FAIL_DIGIT_CHAR
-      code_size += 1
-    end
-
-    code
+    code + FAIL_DIGIT_CHAR * (Codebreaker::Entities::Game::DIGITS_COUNT - code.size)
   end
 
   def valid_size?(game, guess_code)
