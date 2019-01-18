@@ -66,7 +66,7 @@ RSpec.describe Racker do
     it 'adds value to session hints array' do
       post '/hint'
       expect(last_request.session[:used_hints]).not_to be_empty
-      expect(last_request.session[:game].code.join.include?(last_request.session[:used_hints].join)).to be true
+      expect(last_request.session[:game].code.join).to include(last_request.session[:used_hints].join)
     end
   end
 

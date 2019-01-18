@@ -40,10 +40,10 @@ class Racker < Renderer
     Rack::Response.new do |response|
       return lose unless create_game.attempts.positive?
 
-      @guess_code = @request.params['guess_code']
-      @request.session[:guess] = @guess_code
-      @request.session[:guess_code] = @guess.handle_guess_code(create_game, @guess_code)
-      return win if create_game.win?(@guess_code)
+      guess_code = @request.params['guess_code']
+      @request.session[:guess] = guess_code
+      @request.session[:guess_code] = @guess.handle_guess_code(create_game, guess_code)
+      return win if create_game.win?(guess_code)
 
       create_game.decrease_attempts!
       response.redirect('/play')
@@ -79,8 +79,7 @@ class Racker < Renderer
       game = create_game
       return error404_view if game.hints_spent?
 
-      hint = game.take_a_hint!
-      used_hints.push(hint)
+      used_hints.push(game.take_a_hint!)
       response.redirect('/play')
     end
   end

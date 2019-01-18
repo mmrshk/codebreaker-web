@@ -76,7 +76,7 @@
               <button class="btn btn-warning btn-lg float-right" role="button"
                 <% if hints_spent? %> disabled <% end %>>
                   <%= I18n.t(:show_hint) %>
-                <% if !used_hints.empty? %>
+                <% if used_hints.any? %>
                   <span class="badge badge-light">
                   <%= used_hints.join(",") %>
                   </span>
