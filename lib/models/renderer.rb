@@ -1,8 +1,4 @@
 class Renderer
-  def message(phrase, hashee = {})
-    I18n.t(phrase, hashee)
-  end
-
   def stats_view
     template('statistics.html.erb')
   end
