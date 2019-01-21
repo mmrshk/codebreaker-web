@@ -53,7 +53,7 @@
               <div class="form-group guess_markers_list">
                 <div id="guess_marker">
                   <% if @request.session[:guess_code].empty? %>
-                    <% for i in 0...4 do %>
+                    <% 4.times do %>
                       <button type="button" class="btn btn-danger marks" disabled>x</button>
                     <% end %>
                   <% else %>

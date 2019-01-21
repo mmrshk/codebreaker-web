@@ -13,7 +13,7 @@ class Guess
   private
 
   def process
-    @process ||= start_process
+    @process ||= game.start_process(guess_code)
   end
 
   def produce_code
@@ -23,9 +23,5 @@ class Guess
 
   def valid_size?(game, guess_code)
     process.size == Codebreaker::Entities::Game::DIGITS_COUNT
-  end
-
-  def start_process
-    game.start_process(guess_code)
   end
 end
