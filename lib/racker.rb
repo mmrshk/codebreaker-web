@@ -134,7 +134,7 @@ class Racker < Renderer
   end
 
   def exist?(param)
-    !@request.session[param].nil?
+    @request.session.has_key?(:game)
   end
 
   def start_game

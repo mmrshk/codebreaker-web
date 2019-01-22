@@ -62,8 +62,8 @@
                       <% elsif el == '-'%> <button type="button" class="btn btn-primary marks" disabled>-</button>
                       <% end %>
                     <% end %>
-                    <% for i in 0...4 do %>
-                      <% if @request.session[:guess_code].split('')[i].nil? %> <button type="button" class="btn btn-danger marks" disabled>x</button> <% end %>
+                    <% for i in 0...Codebreaker::Entities::Game::DIGITS_COUNT do %>
+                      <% unless @request.session[:guess_code].split('')[i] %> <button type="button" class="btn btn-danger marks" disabled>x</button> <% end %>
                     <% end %>
                   <% end %>
                 </div>
