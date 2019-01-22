@@ -7,7 +7,6 @@ class Racker < Renderer
 
   def initialize(env)
     @request = Rack::Request.new(env)
-    @guess = Guess.new
     @storage = Codebreaker::Entities::DataStorage.new
   end
 
@@ -42,7 +41,7 @@ class Racker < Renderer
 
       guess_code = @request.params['guess_code']
       @request.session[:guess] = guess_code
-      @request.session[:guess_code] = @guess.handle_guess_code(start_game, guess_code)
+      @request.session[:guess_code] = game.start_process(guess_code)
       return win if start_game.win?(guess_code)
 
       start_game.decrease_attempts!

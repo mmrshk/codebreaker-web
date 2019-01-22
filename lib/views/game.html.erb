@@ -58,10 +58,12 @@
                     <% end %>
                   <% else %>
                     <% @request.session[:guess_code].split('').each do |el| %>
-                       <% if el == '+'%> <button type="button" class="btn btn-success marks" disabled>+</button>
-                       <% elsif el == '-'%> <button type="button" class="btn btn-primary marks" disabled>-</button>
-                       <% elsif el == 'x'%> <button type="button" class="btn btn-danger marks" disabled>x</button>
-                       <% end %>
+                      <% if el == '+'%> <button type="button" class="btn btn-success marks" disabled>+</button>
+                      <% elsif el == '-'%> <button type="button" class="btn btn-primary marks" disabled>-</button>
+                      <% end %>
+                    <% end %>
+                    <% for i in 0...4 do %>
+                      <% if @request.session[:guess_code].split('')[i].nil? %> <button type="button" class="btn btn-danger marks" disabled>x</button> <% end %>
                     <% end %>
                   <% end %>
                 </div>
